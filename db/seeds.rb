@@ -13,4 +13,8 @@ AdminUser.create!(
   password_confirmation: 'password'
 ) if Rails.env.development?
 
-create_list(:user, 10)
+users = create_list(:user, 10)
+
+users.each do |user|
+  create_list(:post, 2, author: user)
+end
