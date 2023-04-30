@@ -16,5 +16,5 @@ AdminUser.create!(
 users = create_list(:user, 10)
 
 users.each do |user|
-  create_list(:post, 2, author: user)
+  create_list(:post, 5, author: user)
 end
