@@ -2,16 +2,26 @@ require 'rails_helper'
 
 RSpec.describe PostsController, type: :controller do
   describe 'GET #index' do
-    let(:posts) { create_list(:post, 3) }
+    let(:posts) { create_list(:post, 24) }
 
-    before { get :index }
+    context 'without page' do
+      before { get :index }
+      
+      it 'does not assign every post to @posts' do
+        expect(assigns(:posts)).not_to match_array(posts)
+      end
 
-    it 'assigns a posts list to @posts' do
-      expect(assigns(:posts)).to match_array(posts)
+      it 'renders index view' do
+        expect(response).to render_template :index
+      end
     end
 
-    it 'renders index view' do
-      expect(response).to render_template :index
+    context 'with second page' do
+      before { get :index, params: { page: 2 } }
+
+      it 'assigns last 12 posts to @posts' do
+        expect(assigns(:posts)).to match_array(Post.last(12))
+      end
     end
   end
 
