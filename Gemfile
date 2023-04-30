@@ -48,6 +48,9 @@ gem "bootsnap", require: false
 # Authorization
 gem 'devise'
 
+# Html template engine
+gem 'slim-rails'
+
 # Admin panel
 gem 'activeadmin'
 gem 'arctic_admin'
