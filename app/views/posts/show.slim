@@ -1,4 +1,6 @@
 .wrapper
   .post
-    h1.title= @post.title
-    p.body= @post.description
+    .body
+      h1.title= @post.title
+      p.body= @post.description
+    p.author= @post.author.email
