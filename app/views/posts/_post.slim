@@ -1,0 +1,5 @@
+- if post.persisted?
+    a.post id="posts-#{post.id}" href="#{post_path(post)}"
+      p= post.title 
+      p= post.description.truncate_words(10)
+      p.author= post.author.email
