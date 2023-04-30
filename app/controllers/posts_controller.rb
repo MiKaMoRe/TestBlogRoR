@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.includes(:author).joins(:author).page(params[:page]).per(10)
+    @posts = Post.includes(:author).joins(:author).page(params[:page]).per(12)
   end
 
   def show
