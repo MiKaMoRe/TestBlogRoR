@@ -55,6 +55,9 @@ gem 'slim-rails'
 gem 'activeadmin'
 gem 'arctic_admin'
 
+# Abilities
+gem 'cancancan'
+
 # Use Sass to process CSS
 gem "sassc-rails"
 
