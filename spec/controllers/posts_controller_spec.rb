@@ -40,14 +40,27 @@ RSpec.describe PostsController, type: :controller do
   end
 
   describe 'GET #new' do
-    before { get :new }
+    context "when authenticated user" do
+      before do
+        sign_in(create(:user))
+        get :new
+      end
 
-    it 'assigns a new Post to @post' do
-      expect(assigns(:post)).to be_a_new(Post)
+      it 'assigns a new Post to @post' do
+        expect(assigns(:post)).to be_a_new(Post)
+      end
+  
+      it 'renders new view' do
+        expect(response).to render_template :new
+      end
     end
 
-    it 'renders new view' do
-      expect(response).to render_template :new
+    context "when unauthenticated user" do
+      before { get :new }
+
+      it 'redirects to sign in' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 end

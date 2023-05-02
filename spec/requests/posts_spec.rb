@@ -26,9 +26,9 @@ RSpec.describe "Posts", type: :request do
   
   describe "GET /new" do
     context "when unauthenticated user" do
-      it "returns hhtp success" do
+      it "returns http found" do
         get "/posts/new"
-        expect(response).to have_http_status(:forbiden)
+        expect(response).to have_http_status(:found)
       end
     end
 
@@ -37,7 +37,7 @@ RSpec.describe "Posts", type: :request do
 
       before { sign_in(user) }
       
-      it "returns hhtp success" do
+      it "returns http success" do
         get "/posts/new"
         expect(response).to have_http_status(:success)
       end
