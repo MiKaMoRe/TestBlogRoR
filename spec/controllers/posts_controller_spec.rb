@@ -49,7 +49,7 @@ RSpec.describe PostsController, type: :controller do
       it 'assigns a new Post to @post' do
         expect(assigns(:post)).to be_a_new(Post)
       end
-  
+
       it 'renders new view' do
         expect(response).to render_template :new
       end
