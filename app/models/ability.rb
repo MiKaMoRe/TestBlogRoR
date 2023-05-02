@@ -9,8 +9,8 @@ class Ability
     user ||= User.new # guest user (not logged in)
     @user = user
 
-    return guest_abilities if not user.persisted?
-    user_abilities
+    return user_abilities if user.persisted?
+    guest_abilities
   end
 
   def guest_abilities
