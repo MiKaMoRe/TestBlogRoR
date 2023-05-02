@@ -38,4 +38,16 @@ RSpec.describe PostsController, type: :controller do
       expect(response).to render_template :show
     end
   end
+
+  describe 'GET #new' do
+    before { get :new }
+
+    it 'assigns a new Post to @post' do
+      expect(assigns(:post)).to bew_a_new(Post)
+    end
+
+    it 'renders new view' do
+      expect(response).to render_template :new
+    end
+  end
 end
