@@ -1,0 +1,21 @@
+.form{
+  max-width: 800px;
+
+  &__field{
+    padding: 10px 0;
+
+    & textarea{
+      resize: vertical;
+    }
+  }
+
+  &__submit{
+    display: flex;
+    justify-content: flex-end;
+
+    & input[type="submit"]{
+      padding: 20px;
+      width: auto;
+    }
+  }
+}
