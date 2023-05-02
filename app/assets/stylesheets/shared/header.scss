@@ -1,0 +1,11 @@
+.header{
+  .wrapper{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__rightside {
+    display: flex;
+    gap: 10px;
+  }
+}
