@@ -8,4 +8,6 @@ class PostsController < ApplicationController
   def show
     @post = Post.joins(:author).find(params[:id])
   end
+
+  def new; end
 end
