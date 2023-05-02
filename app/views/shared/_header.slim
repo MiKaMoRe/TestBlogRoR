@@ -7,7 +7,6 @@ header.header
     .header__rightside
       - if user_signed_in?
         b= current_user.email
-        = link_to 'Sign out', destroy_user_session_path, method: :delete
+        = button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'sign_out'
       - else
         = link_to 'Sign up', new_user_session_path
-      
