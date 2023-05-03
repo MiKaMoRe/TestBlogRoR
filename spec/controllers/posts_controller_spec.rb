@@ -48,7 +48,7 @@ RSpec.describe PostsController, type: :controller do
   end
 
   describe 'GET #new' do
-    context "when authenticated user" do
+    context 'when authenticated user' do
       before do
         sign_in(create(:user))
         get :new
@@ -67,7 +67,7 @@ RSpec.describe PostsController, type: :controller do
       end
     end
 
-    context "when unauthenticated user" do
+    context 'when unauthenticated user' do
       before { get :new }
 
       it 'redirects to sign in' do
@@ -189,6 +189,48 @@ RSpec.describe PostsController, type: :controller do
       it 'returns http found' do
         delete_destroy
         expect(response).to have_http_status(:found)
+      end
+    end
+  end
+
+  describe 'GET #edit' do
+    let(:get_edit) { get :edit, params: { id: post.id } }
+
+    context 'when the user is not logged in' do
+      let(:post) { create(:post) }
+
+      it 'redirects to the login page' do
+        get_edit
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    context 'when the user is logged in' do
+      let(:user) { create(:user) }
+      let(:post) { create(:post, author: user) }
+
+      before { sign_in user }
+
+      context 'when the user owns the post' do
+        before { get :edit, params: { id: post.id } }
+
+        it 'returns a 200 status code' do
+          expect(response).to have_http_status(200)
+        end
+
+        it 'renders edit view' do
+          expect(response).to render_template :edit
+        end
+      end
+
+      context 'when the user does not own the post' do
+        let(:post) { create(:post) }
+
+        before { get :edit, params: { id: post.id } }
+
+        it 'returns http forbidden' do
+          expect(response).to have_http_status(:forbidden)
+        end
       end
     end
   end
