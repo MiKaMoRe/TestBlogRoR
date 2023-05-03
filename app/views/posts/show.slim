@@ -3,3 +3,5 @@
     h1.title= @post.title
     p.body= @post.description
   p.author= @post.author.email
+  - if can?(:manage, @post)
+    = button_to 'Удалить пост', post_path(@post), method: :delete
