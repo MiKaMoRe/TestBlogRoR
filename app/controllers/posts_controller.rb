@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  before_action :find_post, only: %i[destroy edit]
+
   skip_before_action :authenticate_user!, only: %i[index show]
 
   load_and_authorize_resource
@@ -24,8 +26,6 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.find(params[:id])
-
     return flash[:alert] = ['Permissions denied'] unless can?(:manage, @post)
 
     @post.destroy
@@ -33,7 +33,13 @@ class PostsController < ApplicationController
     redirect_to posts_path
   end
 
+  def edit; end
+
   private
+
+  def find_post
+    @post = Post.find(params[:id])
+  end
 
   def post_params
     params.require(:post).permit(:title, :description)

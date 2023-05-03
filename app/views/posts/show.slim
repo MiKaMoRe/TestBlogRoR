@@ -5,3 +5,4 @@
   p.author= @post.author.email
   - if can?(:manage, @post)
     = button_to 'Удалить пост', post_path(@post), method: :delete
+    = link_to 'Изменить пост', edit_post_path(@post)
