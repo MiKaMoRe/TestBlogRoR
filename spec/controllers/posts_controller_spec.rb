@@ -63,4 +63,43 @@ RSpec.describe PostsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #create' do
+    let(:user) { create(:user) }
+    let(:post_create) { post :create, params: { post: post_params } }
+
+    context 'when authenticated user' do
+      before { sign_in(user) }
+
+      context 'with valid params' do
+        let(:post_params) { attributes_for(:post) }
+
+        it 'saves a new post in database' do
+          expect { post_create }.to change(Post, :count).by(1)
+        end
+
+        it 'redirect to show view' do
+          post_create
+          expect(response).to redirect_to assigns(:post)
+        end
+      end
+
+      context 'with invalid params' do
+        let(:post_params) { attributes_for(:post, title: '') }
+
+        it 'does not save the question' do
+          expect { post_create }.not_to change(Post, :count)
+        end
+      end
+    end
+
+    context 'when unauthenticated user' do
+      let(:post_params) { attributes_for(:post) }
+
+      it 'redirect to sign in' do
+        post_create
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
 end

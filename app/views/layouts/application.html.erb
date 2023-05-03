@@ -14,7 +14,9 @@
     <%= render 'shared/header' %>
     <div class="wrapper">
       <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+      <% flash.each do |type, msg| %>
+        <p class="alert"><%= msg %></p>
+      <% end %>
       <%= yield %>
     </div>
   </body>
