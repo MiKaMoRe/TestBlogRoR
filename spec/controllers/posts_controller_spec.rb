@@ -14,6 +14,10 @@ RSpec.describe PostsController, type: :controller do
       it 'renders index view' do
         expect(response).to render_template :index
       end
+
+      it 'returns http success' do
+        expect(response).to have_http_status(:success)
+      end
     end
 
     context 'with second page' do
@@ -37,6 +41,10 @@ RSpec.describe PostsController, type: :controller do
     it 'renders index show' do
       expect(response).to render_template :show
     end
+
+    it 'returns http success' do
+      expect(response).to have_http_status(:success)
+    end
   end
 
   describe 'GET #new' do
@@ -53,6 +61,10 @@ RSpec.describe PostsController, type: :controller do
       it 'renders new view' do
         expect(response).to render_template :new
       end
+
+      it 'returns http success' do
+        expect(response).to have_http_status(:success)
+      end
     end
 
     context "when unauthenticated user" do
@@ -60,6 +72,10 @@ RSpec.describe PostsController, type: :controller do
 
       it 'redirects to sign in' do
         expect(response).to redirect_to new_user_session_path
+      end
+
+      it 'returns http found' do
+        expect(response).to have_http_status(:found)
       end
     end
   end
@@ -82,6 +98,11 @@ RSpec.describe PostsController, type: :controller do
           post_create
           expect(response).to redirect_to assigns(:post)
         end
+
+        it 'returns http success' do
+          post_create
+          expect(response).to have_http_status(:found)
+        end
       end
 
       context 'with invalid params' do
@@ -90,15 +111,25 @@ RSpec.describe PostsController, type: :controller do
         it 'does not save the question' do
           expect { post_create }.not_to change(Post, :count)
         end
+
+        it 'returns http unprocessable entity' do
+          post_create
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
       end
     end
 
     context 'when unauthenticated user' do
       let(:post_params) { attributes_for(:post) }
 
+      before { post_create }
+
       it 'redirect to sign in' do
-        post_create
         expect(response).to redirect_to new_user_session_path
+      end
+
+      it 'returns http found' do
+        expect(response).to have_http_status(:found)
       end
     end
   end
@@ -122,6 +153,11 @@ RSpec.describe PostsController, type: :controller do
           delete_destroy
           expect(response).to redirect_to posts_path
         end
+
+        it 'returns http found' do
+          delete_destroy
+          expect(response).to have_http_status(:found)
+        end
       end
 
       context 'and it is not a author of a post' do
@@ -129,6 +165,11 @@ RSpec.describe PostsController, type: :controller do
 
         it 'not deletes the answer' do
           expect { delete_destroy }.not_to change(Post, :count)
+        end
+
+        it 'returns http forbidden' do
+          delete_destroy
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end
@@ -143,6 +184,11 @@ RSpec.describe PostsController, type: :controller do
       it 'redirect to sign in' do
         delete_destroy
         expect(response).to redirect_to new_user_session_path
+      end
+
+      it 'returns http found' do
+        delete_destroy
+        expect(response).to have_http_status(:found)
       end
     end
   end
