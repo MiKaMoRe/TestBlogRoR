@@ -13,9 +13,12 @@
   <body>
     <%= render 'shared/header' %>
     <div class="wrapper">
-      <p class="notice"><%= notice %></p>
       <% flash.each do |type, msg| %>
-        <p class="alert"><%= msg %></p>
+        <% if type == 'notice' %>
+          <p class="notice"><%= msg %></p>
+        <% else %>
+          <p class="alert"><%= msg %></p>
+        <% end %>
       <% end %>
       <%= yield %>
     </div>
