@@ -102,4 +102,48 @@ RSpec.describe PostsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let(:delete_destroy) { delete :destroy, params: { id: post } }
+
+    context 'when authenticated user' do
+      let(:user) { create(:user) }
+
+      before { sign_in(user) }
+
+      context 'and it is a author of a post' do
+        let!(:post) { create(:post, author: user) }
+
+        it 'deletes the answer' do
+          expect { delete_destroy }.to change(Post, :count).by(-1)
+        end
+
+        it 'redirect to post index' do
+          delete_destroy
+          expect(response).to redirect_to posts_path
+        end
+      end
+
+      context 'and it is not a author of a post' do
+        let!(:post) { create(:post) }
+
+        it 'not deletes the answer' do
+          expect { delete_destroy }.not_to change(Post, :count)
+        end
+      end
+    end
+
+    context 'when unauthenticated user' do
+      let!(:post) { create(:post) }
+
+      it 'not deletes the answer' do
+        expect { delete_destroy }.not_to change(Post, :count)
+      end
+
+      it 'redirect to sign in' do
+        delete_destroy
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
 end

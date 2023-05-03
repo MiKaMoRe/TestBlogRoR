@@ -23,6 +23,16 @@ class PostsController < ApplicationController
     render new_post_path, status: :unprocessable_entity
   end
 
+  def destroy
+    @post = Post.find(params[:id])
+
+    return flash[:alert] = ['Permissions denied'] unless can?(:manage, @post)
+
+    @post.destroy
+    flash[:notice] = 'Post has been deleted'
+    redirect_to posts_path
+  end
+
   private
 
   def post_params
