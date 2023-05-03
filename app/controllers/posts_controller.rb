@@ -12,4 +12,20 @@ class PostsController < ApplicationController
   end
 
   def new; end
+
+  def create
+    @post = current_user.posts.build(post_params)
+
+    return flash[:alert] = ['Permissions denied'] unless can?(:manage, @post)
+    return redirect_to @post if @post.save
+
+    flash[:alert] = @post.errors.full_messages
+    render new_post_path, status: :unprocessable_entity
+  end
+
+  private
+
+  def post_params
+    params.require(:post).permit(:title, :description)
+  end
 end

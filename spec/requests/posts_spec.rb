@@ -43,4 +43,40 @@ RSpec.describe "Posts", type: :request do
       end
     end
   end
+
+  describe 'POST /create' do
+    let(:post_create) { post '/posts', params: { post: post_params } }
+
+    context 'when authenticated user' do
+      let(:user) { create(:user) }
+
+      before { sign_in(user) }
+
+      context 'with valid params' do
+        let(:post_params) { attributes_for(:post) }
+        it 'returns http success' do
+          post_create
+          expect(response).to have_http_status(:found)
+        end
+      end
+
+      context 'with invalid params' do
+        let(:post_params) { attributes_for(:post, description: '') }
+  
+        it 'returns http unprocessable entity' do
+          post_create
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+    end
+
+    context 'when unauthenticated user' do
+      let(:post_params) { attributes_for(:post) }
+
+      it 'returns http found' do
+        post_create
+        expect(response).to have_http_status(:found)
+      end
+    end
+  end
 end
