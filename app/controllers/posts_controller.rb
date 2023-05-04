@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @posts = Post.includes(:author).joins(:author).page(params[:page]).per(12)
+    @posts = posts_filter.includes(:author).joins(:author).page(params[:page]).per(12)
   end
 
   def show
@@ -55,5 +55,13 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:title, :description, :image)
+  end
+
+  def posts_filter
+    if current_user
+      return current_user.posts if params[:only_my]
+    end
+
+    Post
   end
 end
