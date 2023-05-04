@@ -28,3 +28,16 @@ header{
   border: none;
   cursor: pointer;
 }
+
+.notice, .alert {
+  list-style-type: disc;
+  padding: 20px;
+}
+
+.notice{
+  color: #008011;
+}
+
+.alert{
+  color: #ff5252;
+}
