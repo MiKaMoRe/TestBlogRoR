@@ -6,5 +6,8 @@ h3 Изменить пост
   .form__field
     = form.label :description
     = form.text_area :description
+  .form__field
+    = form.label :image
+    = form.file_field :image
   .form__submit
     = form.submit "Опубликовать"
