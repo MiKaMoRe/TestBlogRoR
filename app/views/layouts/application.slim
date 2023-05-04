@@ -10,14 +10,5 @@ html
   body
     = render 'shared/header'
     .wrapper
-      - flash.each do |type, list|
-        - if type == 'notice'
-          ul.notice
-            - list.each do |message|
-              li= message
-        - else
-          ul.alert
-            - list.each do |message|
-              li= message
-          
+      = render 'shared/flash'
       = yield

@@ -1,0 +1,15 @@
+- flash.each do |type, content|
+  - if type == 'notice'
+    ul.notice
+      - if content.is_a? String
+        li= content
+      - else
+        - content.each do |message|
+          li= message
+  - else
+    ul.alert
+      - if content.is_a? String
+        li= content
+      - else
+        - content.each do |message|
+          li= message
