@@ -25,5 +25,19 @@ RSpec.describe CommentsController, type: :controller do
         end
       end
     end
+
+    context 'when unauthenticated user' do
+      let(:comment_params) { attributes_for(:comment) }
+
+      before { post_create }
+
+      it 'redirect to sign in' do
+        expect(response).to redirect_to new_user_session_path
+      end
+
+      it 'returns http found' do
+        expect(response).to have_http_status(:found)
+      end
+    end
   end
 end
