@@ -20,6 +20,6 @@ class Ability
   def user_abilities
     guest_abilities
 
-    can :manage, [Post], author_id: user.id
+    can :manage, [Post, Comment], author_id: user.id
   end
 end

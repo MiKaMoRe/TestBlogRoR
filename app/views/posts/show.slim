@@ -8,3 +8,12 @@
   - if can?(:manage, @post)
     = button_to 'Удалить пост', post_path(@post), method: :delete
     = link_to 'Изменить пост', edit_post_path(@post)
+.comments
+  = form_with model: [@post, @comment], class: :form do |form|
+    h4 Оставить комментарий
+    .form__field
+      = form.text_area :body
+    .form__submit
+      = form.submit "Опубликовать"
+  hr
+  = render @comments
