@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :find_post, only: %i[destroy edit]
+  before_action :find_post, only: %i[destroy edit update]
 
   skip_before_action :authenticate_user!, only: %i[index show]
 
@@ -29,11 +29,23 @@ class PostsController < ApplicationController
     return flash[:alert] = ['Permissions denied'] unless can?(:manage, @post)
 
     @post.destroy
-    flash[:notice] = 'Post has been deleted'
+    flash[:notice] = ['Post has been deleted']
     redirect_to posts_path
   end
 
   def edit; end
+
+  def update
+    return flash[:alert] = ['Permissions denied'] unless can?(:manage, @post)
+
+    if @post.update(post_params)
+      flash[:notice] = ['Post has been updated']
+      return redirect_to post_path(@post)
+    end
+
+    flash[:alert] = @post.errors.full_messages
+    render :edit, status: :unprocessable_entity
+  end
 
   private
 

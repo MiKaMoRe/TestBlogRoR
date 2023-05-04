@@ -106,7 +106,7 @@ RSpec.describe PostsController, type: :controller do
       end
 
       context 'with invalid params' do
-        let(:post_params) { attributes_for(:post, title: '') }
+        let(:post_params) { attributes_for(:post, :invalid) }
 
         it 'does not save the question' do
           expect { post_create }.not_to change(Post, :count)
@@ -227,6 +227,72 @@ RSpec.describe PostsController, type: :controller do
         let(:post) { create(:post) }
 
         before { get :edit, params: { id: post.id } }
+
+        it 'returns http forbidden' do
+          expect(response).to have_http_status(:forbidden)
+        end
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:patch_update) { patch :update, params: { id: post.id, post: post_params } }
+    let(:user) { create(:user) }
+
+    context 'when the user is not logged in' do
+      let(:post) { create(:post) }
+      let(:post_params) { attributes_for(:post) }
+
+      it 'redirects to the login page' do
+        patch_update
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'when the user is logged in' do
+      before do
+        sign_in user
+        patch_update
+      end
+
+      context 'when the user owns the post' do
+        let(:post) { create(:post, author: user) }
+
+        context 'with valid params' do
+          let(:post_params) { attributes_for(:post) }
+
+          it 'updates the post' do
+            post.reload
+            expect(post.title).to eq(post_params[:title])
+          end
+  
+          it 'redirects to the post' do
+            expect(response).to redirect_to(post_path(post))
+          end
+        end
+
+        context 'with invalid params' do
+          let(:post_params) { attributes_for(:post, :invalid) }
+
+          it 'does not update the post' do
+            post.reload
+            expect(post.title).not_to eq(post_params[:title])
+          end
+
+          it 'returns http unprocessable entity' do
+            expect(response).to have_http_status(:unprocessable_entity)
+          end
+        end
+      end
+
+      context 'when the user does not own the post' do
+        let(:post_params) { attributes_for(:post) }
+        let(:post) { create(:post) }
+
+        it 'does not update the post' do
+          post.reload
+          expect(post.title).not_to eq(post_params[:title])
+        end
 
         it 'returns http forbidden' do
           expect(response).to have_http_status(:forbidden)
