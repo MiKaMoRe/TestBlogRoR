@@ -21,3 +21,23 @@
 header{
   padding-top: 10px;
 }
+
+.sign_out{
+  font-size: 16px;
+  color: #4bacfe;
+  border: none;
+  cursor: pointer;
+}
+
+.notice, .alert {
+  list-style-type: disc;
+  padding: 20px;
+}
+
+.notice{
+  color: #008011;
+}
+
+.alert{
+  color: #ff5252;
+}

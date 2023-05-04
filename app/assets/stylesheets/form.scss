@@ -1,0 +1,35 @@
+.form{
+  max-width: 800px;
+
+  &__field{
+    padding: 10px 0;
+
+    & textarea{
+      resize: vertical;
+    }
+  }
+
+  &__submit{
+    display: flex;
+    justify-content: flex-end;
+
+    & input[type="submit"]{
+      padding: 20px;
+      width: auto;
+    }
+  }
+}
+
+form.new_user{
+  max-width: 500px;
+  padding-bottom: 10px;
+
+  & .field{
+    padding: 10px 0;
+  }
+
+  & input[type="submit"]{
+    padding: 20px;
+    width: auto;
+  }
+}

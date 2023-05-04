@@ -8,4 +8,8 @@ FactoryBot.define do
 
     author { create(:user) }
   end
+
+  trait :invalid do
+    title { nil }
+  end
 end

@@ -1,4 +1,14 @@
-header
+header.header
   .wrapper
-    h1
-      = link_to 'TestBlogRoR', root_path
+    .header__leftside
+      h1
+        = link_to 'TestBlogRoR', root_path
+      - if can?(:create, Post)
+        = link_to 'Создать пост', new_post_path
+    .header__rightside
+      - if user_signed_in?
+        b= current_user.email
+        = button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'sign_out'
+      - else
+        = link_to 'Sign in', new_user_session_path
+        = link_to 'Sign up', new_user_registration_path
